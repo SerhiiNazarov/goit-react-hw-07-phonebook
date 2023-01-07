@@ -9,6 +9,7 @@ import { useEffect } from 'react';
 export default function App() {
   const contacts = useSelector(contactsSelectors.getContacts);
   const loading = useSelector(contactsSelectors.getIsLoading);
+  const error = useSelector(contactsSelectors.getError);
   const dispatch = useDispatch();
 
   useEffect(() => {
@@ -17,21 +18,26 @@ export default function App() {
 
   return (
     <Container>
-      {loading ? (
-        <p style={{ color: 'green' }}>Loading ...</p>
+      {error ? (
+        <p style={{ color: 'red' }}>{error.message}</p>
       ) : (
         <>
-          {' '}
-          <h1>Phonebook</h1>
-          <FormPhonebook />
-          <h2>Contacts</h2>
-          {contacts.length > 1 && <Filter />}
-          {contacts.length > 0 ? (
-            <Contacts />
+          {loading ? (
+            <p style={{ color: 'green' }}>Loading ...</p>
           ) : (
-            <p style={{ color: 'red' }}>
-              Your phonebook is empty. Please add contact.
-            </p>
+            <>
+              <h1>Phonebook</h1>
+              <FormPhonebook />
+              <h2>Contacts</h2>
+              {contacts.length > 1 && <Filter />}
+              {contacts.length > 0 ? (
+                <Contacts />
+              ) : (
+                <p style={{ color: 'red' }}>
+                  Your phonebook is empty. Please add contact.
+                </p>
+              )}
+            </>
           )}
         </>
       )}
